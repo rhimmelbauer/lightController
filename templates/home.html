@@ -1,23 +1,48 @@
 {% extends 'base.html' %}
 
 {% block breadcrumb %}
-        <li class="breadcrumb-item active">House Zones</li>
+        <li class="breadcrumb-item active">Zones & Bulbs</li>
 {% endblock %}
 
 {% block content %}
+    <div class="mb-4">
+      <a href="{% url 'new_zone' %}" class="btn btn-primary">New Zone</a>
+    </div>
+
 	{% for zone in zones %}
-	<h3> <span class="badge badge-primary">{{ zone.name }}</span> </h3>
+	<h3> <span class="badge badge-light"><a href="{% url 'control_zone' zone.pk %}"  sytle="color=white !important;"> {{ zone.name }}</a></span></h3>
 	<ul class="list-group">
 	  {% for bulb in bulbs %}
 	     {% if bulb.zone_id == zone %}
-	       <li class="list-group-item" ><a href="{% url 'bulb' bulb.pk %}">{{ bulb.name }}</a></li>
-	     {% endif %}
-	  {% endfor %}
-	  {% for speaker in speakers %}
-	     {% if speaker.zone_id == zone %}
-	  	<li class="list-group-item" ><a href="{% url 'speaker' speaker.pk %}">{{ speaker.name }}</a></li>
+	       <li class="list-group-item" ><a href="{% url 'edit_bulb' bulb.pk %}">{{ bulb.name }}</a></li>
 	     {% endif %}
 	  {% endfor %}
 	</ul>
 	{% endfor %}
+        </div>
+    <h3> <span class="badge badge-primary">Bulbs With No Zone</span> </h3>
+      <table class="table">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Bulb Name</th>
+            <th>Zone</th>
+            <th>State</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for bulb in bulbsNoZone %}
+            <tr>
+              <td>
+                <a href="{% url 'edit_bulb' bulb.pk %}">{{ bulb.name }}</a>
+              </td>
+              <td>
+                {{ bulb.description }}
+              </td>    
+              <td>
+                {{ bulb.onOff }}
+              </td>    
+            </tr>
+          {% endfor %}
+        </tbody> 
+        </div> 
 {% endblock %}
