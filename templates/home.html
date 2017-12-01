@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+        <li class="breadcrumb-item active">House Zones</li>
+{% endblock %}
+
+{% block content %}
+	{% for zone in zones %}
+	<h3> <span class="badge badge-primary">{{ zone.name }}</span> </h3>
+	<ul class="list-group">
+	  {% for bulb in bulbs %}
+	     {% if bulb.zone_id == zone %}
+	       <li class="list-group-item" ><a href="{% url 'bulb' bulb.pk %}">{{ bulb.name }}</a></li>
+	     {% endif %}
+	  {% endfor %}
+	  {% for speaker in speakers %}
+	     {% if speaker.zone_id == zone %}
+	  	<li class="list-group-item" ><a href="{% url 'speaker' speaker.pk %}">{{ speaker.name }}</a></li>
+	     {% endif %}
+	  {% endfor %}
+	</ul>
+	{% endfor %}
+{% endblock %}

@@ -1,0 +1,15 @@
+.navbar-brand {
+  font-family: 'Roboto', sans-serif;
+}
+
+.breadcrumb-item
+{
+  font-family: 'Roboto', sans-serif;
+}
+
+.table
+{
+  font-family: 'Roboto', sans-serif !important;
+  color: 'blue' !important;
+}
+
