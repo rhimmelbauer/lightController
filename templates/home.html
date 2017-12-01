@@ -13,15 +13,14 @@
 	<h3> <span class="badge badge-light"><a href="{% url 'control_zone' zone.pk %}"  sytle="color=white !important;"> {{ zone.name }}</a></span></h3>
 	<ul class="list-group">
 	  {% for bulb in bulbs %}
-	     {% if bulb.zone_id == zone %}
+	     {% if bulb.zone == zone %}
 	       <li class="list-group-item" ><a href="{% url 'edit_bulb' bulb.pk %}">{{ bulb.name }}</a></li>
 	     {% endif %}
 	  {% endfor %}
 	</ul>
 	{% endfor %}
-        </div>
-    <h3> <span class="badge badge-primary">Bulbs With No Zone</span> </h3>
-      <table class="table">
+  <h3> <span class="badge badge-primary">Bulbs With No Zone</span> </h3>
+  <table class="table">
         <thead class="thead-inverse">
           <tr>
             <th>Bulb Name</th>
@@ -39,7 +38,11 @@
                 {{ bulb.description }}
               </td>    
               <td>
-                {{ bulb.onOff }}
+                {% if bulb.onOff %}
+                  On
+                {% else %}
+                  Off
+                {% endif%}
               </td>    
             </tr>
           {% endfor %}

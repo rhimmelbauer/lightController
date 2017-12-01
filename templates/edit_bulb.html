@@ -1,11 +1,157 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block title %}
+  {{zone.name }} - {{ block.super }}
 {% endblock %}
 
 {% block breadcrumb %}
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">{{ bulb.name }}</li>
 {% endblock %}
 
 {% block content %}
+<div class="row">
+	<div class="col">
+	</div>
+	<div class="col">
+	</div>
+	<div class="col">
+	</div>
+</div>
+<img src="{% static 'images/bulb.png' %}" class="rounded mx-auto d-block">
+<div class="row" style="height: 35px;">
+</div>
+
+<form method="post" novalidate>
+	<intput type="text" name="{{ bulb.name.name }}" id="{{ bulb.name.id_for_label }}">
+	</intput>
+	{% csrf_token %}
+	<!---------------- ON OFF SWITCH -------------------->
+	<div class="row text-left">
+    		On/Off:
+    </div>
+    <div class="row">
+    	<div class="col-1">
+			<div class="form-group">
+				<input id="toggle-one" type="checkbox"  class="form-control" name="{{ form.onOff.name}}" id="form.onOff.id_for_label">
+			</div>
+    	</div>
+    </div>
+	<div class="row" style="height: 35px;">
+	</div>
+	<!---------------- ON OFF SWITCH -------------------->
+	<!---------------- COLOR PICKER -------------------->
+	<div class="row text-left">
+		<input type="text" id="hsv" hidden>
+		</input>
+		<input type="text" id="rgb" name="form.rgbColor.name" id="form.rgbColor.id_for_label" hidden>
+		</input>
+		Change Color:
+	</div>
+	<div class="row">
+		<div class="col-1"><input class="jscolor {onFineChange:'update(this)'}" value="{{ bulb.rgbColor }}"></input>
+		</div>
+		<div class="col"></div>
+	</div>
+	<div class="row" style="height: 35px;">
+	</div>
+	<!---------------- COLOR PICKER -------------------->
+	<!---------------- BRITHNESS SLIDER -------------------->
+	<div class="row text-left">
+		<span id="ex6CurrentSliderValLabel">Brightness: 
+			<span id="ex6SliderVal">{{ bulb.brightness }}
+			</span>
+		</span>
+	</div>
+	<div class="row">
+		<div class="col-1">
+			<input id="ex6" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="{{ bulb.brightness }}" name="form.brightness.name" id="form.brightness.id_for_label">
+			</input>
+		</div>
+	</div>
+	<div class="row" style="height: 35px;">
+	</div>
+	<!---------------- BRITHNESS SLIDER -------------------->
+	<!---------------- ZONE DROPDOWN -------------------->
+	<div class="row">
+		<dic class="col-6">
+			<div class="dropdown">
+			    <button aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#" style="min-width: 180px;">
+			      <span id="selected" name="rgbColor">
+			      	{% if bulb.zone == None %}
+			      		No Zone
+			      	{% else %}
+			      		{{ bulb.zone}}
+			      	{% endif %}
+			      </span>
+			  	</button>
+			    <ul class="dropdown-menu">
+			    	{% for zone in zones %}
+			        	<li><a class="dropdown-item bg-primary text-white">{{ zone.name }}</a></li>
+			        {% endfor %}
+			    </ul>
+			</div>
+		</div>
+		<div class="col-6">
+		<div>
+	</div>
+	<div class="row" style="height: 35px;">
+	</div>
+	<!---------------- ZONE DROPDOWN -------------------->
+
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+	$(function() {
+		$('#toggle-one').bootstrapToggle(
+		{% if bulb.onOff == True %}
+			'on'
+		{% else %}
+			'off'
+		{% endif %}
+		);
+	})
+</script>
+<script>
+	// With JQuery
+	console.log("slider")
+	$("#ex6").slider();
+$("#ex6").on("slide", function(slideEvt) {
+	$("#ex6SliderVal").text(slideEvt.value);
+});
+
+</script>
+<script>
+function update(picker) {
+    document.getElementById('rgb').innerHTML =
+        Math.round(picker.rgb[0]) + ', ' +
+        Math.round(picker.rgb[1]) + ', ' +
+        Math.round(picker.rgb[2]);
+
+    document.getElementById('hsv').innerHTML =
+        Math.round(picker.hsv[0]) + '&deg;, ' +
+        Math.round(picker.hsv[1]) + '%, ' +
+        Math.round(picker.hsv[2]) + '%';
+}
+</script>
+
+<script>
+	$('.dropdown-menu a').click(function(){
+		$('#selected').text($(this).text());
+  	});
+</script>
+<script>
+	$(function() {
+	    $('#toggle-one').bootstrapToggle(
+		{% if bulb.onOff == True %}
+		    'on'
+		{% else %}
+		    'off'
+		{% endif %}
+		);
+	  })
+</script>
 {% endblock %}
 
