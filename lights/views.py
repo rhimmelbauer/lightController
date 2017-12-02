@@ -37,3 +37,6 @@ def edit_bulb(request, pk):
 def control_zone(request, pk):
     zone = get_object_or_404(Zone, pk=pk)
     return render(request, 'new_component.html',{'zone': zones})
+
+def stats(request):
+    return render(request, 'stats.html')

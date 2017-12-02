@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <div id="gauge" class="200x160px"></div>
+    <script>
+      var g = new JustGage({
+        id: "gauge",
+        value: 67,
+        min: 0,
+        max: 100,
+        title: "Visitors"
+      });
+    </script>
+{% endblock %}
+
