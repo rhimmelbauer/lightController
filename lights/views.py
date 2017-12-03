@@ -17,12 +17,19 @@ def edit_bulb(request, pk):
     if request.method == 'POST':
     	print("-------------------POST ENTERED---------------------")
     	form = CustomBulb(request.POST)
+    	print(form['brightness'])
+    	print(form['rgbColor'])
+    	print(form['onOff'])
+    	print(form['zone'].value)
     	if form.is_valid():
     		print("------------------------VALID-----------------")
-    		bulb = form.save(commit=False)
-    		print(bulb.onOff)
-    		print( bulb.rgbColor)
-    		print(bulb.brightness)
+    		bulb = Bulb.objects.get(pk=pk)
+    		bulbForm = form.save(commit=False)
+    		bulb.onOff = bulbForm.onOff
+    		bulb.rgbColor = bulbForm.rgbColor
+    		bulb.brightness = bulbForm.brightness
+    		bulb.zone = bulbForm.zone
+    		bulb.save()
     		return redirect('home')
     	else:
     		print (form['onOff'])
@@ -31,6 +38,7 @@ def edit_bulb(request, pk):
     else:
         form = CustomBulb()
         bulb = get_object_or_404(Bulb, pk=pk)
+        print(bulb.zone)
         zones = Zone.objects.all()
         return render(request, 'edit_bulb.html', {'bulb': bulb, 'form': form, 'zones': zones })
 

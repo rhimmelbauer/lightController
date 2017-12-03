@@ -17,4 +17,5 @@ class CustomBulb(forms.ModelForm):
 		model = Bulb
 		fields = ['onOff',
 		'rgbColor',
-		'brightness']
+		'brightness',
+        'zone']

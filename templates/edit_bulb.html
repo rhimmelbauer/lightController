@@ -34,7 +34,7 @@
     <div class="row">
     	<div class="col-1">
 			<div class="form-group">
-				<input id="toggle-one" type="checkbox"  class="form-control" name="{{ form.onOff.name}}" id="form.onOff.id_for_label">
+				<input id="toggle-one" type="checkbox"  class="form-control" name="{{ form.onOff.name}}" id="{{ form.onOff.id_for_label }}">
 			</div>
     	</div>
     </div>
@@ -43,14 +43,10 @@
 	<!---------------- ON OFF SWITCH -------------------->
 	<!---------------- COLOR PICKER -------------------->
 	<div class="row text-left">
-		<input type="text" id="hsv" hidden>
-		</input>
-		<input type="text" id="rgb" name="form.rgbColor.name" id="form.rgbColor.id_for_label" hidden>
-		</input>
 		Change Color:
 	</div>
 	<div class="row">
-		<div class="col-1"><input class="jscolor {onFineChange:'update(this)'}" value="{{ bulb.rgbColor }}"></input>
+		<div class="col-1"><input class="jscolor {onFineChange:'update(this)'} form-control" value="{{ bulb.rgbColor }}" name="{{ form.rgbColor.name }}" id="{{ form.rgbColor.id_for_label }}" style="min-width: 80px;"></input>
 		</div>
 		<div class="col"></div>
 	</div>
@@ -66,7 +62,7 @@
 	</div>
 	<div class="row">
 		<div class="col-1">
-			<input id="ex6" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="{{ bulb.brightness }}" name="form.brightness.name" id="form.brightness.id_for_label">
+			<input id="ex6" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="{{ bulb.brightness }}" name="{{ form.brightness.name }}" id="{{ form.brightness.id_for_label }}">
 			</input>
 		</div>
 	</div>
@@ -76,22 +72,7 @@
 	<!---------------- ZONE DROPDOWN -------------------->
 	<div class="row">
 		<dic class="col-6">
-			<div class="dropdown">
-			    <button aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#" style="min-width: 180px;">
-			      <span id="selected" name="rgbColor">
-			      	{% if bulb.zone == None %}
-			      		No Zone
-			      	{% else %}
-			      		{{ bulb.zone}}
-			      	{% endif %}
-			      </span>
-			  	</button>
-			    <ul class="dropdown-menu">
-			    	{% for zone in zones %}
-			        	<li><a class="dropdown-item bg-primary text-white">{{ zone.name }}</a></li>
-			        {% endfor %}
-			    </ul>
-			</div>
+			{{ form.zone }}
 		</div>
 		<div class="col-6">
 		<div>
@@ -140,6 +121,7 @@ function update(picker) {
 <script>
 	$('.dropdown-menu a').click(function(){
 		$('#selected').text($(this).text());
+		$('#{{ form.zone.id_for_label }}').text($(this).text());
   	});
 </script>
 <script>
