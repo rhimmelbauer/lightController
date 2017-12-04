@@ -6,7 +6,7 @@ from .forms import *
 from .lightControl import *
 
 def home(request):
-	#get_bulbs()
+	get_bulbs()
 	zones = Zone.objects.all()
 	bulbs = Bulb.objects.all()
 	bulbsNoZone = Bulb.objects.exclude(zone__isnull=False)
@@ -40,6 +40,7 @@ def edit_bulb(request, pk):
     		bulb.brightness = bulbForm.brightness
     		bulb.zone = bulbForm.zone
     		bulb.save()
+                update_bulb(bulb)
     		return redirect('home')
     	else:
     		print (form['onOff'])

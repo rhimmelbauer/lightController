@@ -4,19 +4,19 @@ from colorConvertion import *
 def get_bulbs():
 	#get bulb ips.
 	for dev in Discover.discover().values():
-		print(dev)
+	    print(dev)
 	#validate if they exist.
 	#save insert bulbs in db.
 
-def update_bull(bulb):
+def update_bulb(bulb):
 	smartBulb = SmartBulb(bulb.ipAddr)
 	if bulb.onOff:
 		smartBulb.turn_on()
 	else:
 		smartBulb.turn_off()
 
-	hsv = rgb2hsv(int(bulb.rgb[0:2], 16),int(bulb.rgb[2:4], 16),int(bulb.rgb[4:6], 16))
+	hsv = rgb2hsv(int(bulb.rgbColor[0:2], 16),int(bulb.rgbColor[2:4], 16),int(bulb.rgbColor[4:6], 16))
 
-
+        
 
     
