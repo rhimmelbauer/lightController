@@ -19,3 +19,9 @@ class CustomBulb(forms.ModelForm):
 		'rgbColor',
 		'brightness',
         'zone']
+
+class NewZone(forms.ModelForm):
+    class Meta:
+        model = Zone
+        fields = ['name',
+        'description']

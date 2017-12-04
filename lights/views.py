@@ -1,17 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from random import randint
 
 from .models import *
 from .forms import *
+from .lightControl import *
 
 def home(request):
-    zones = Zone.objects.all()
-    bulbs = Bulb.objects.all()
-    bulbsNoZone = Bulb.objects.exclude(zone__isnull=False)
-    return render(request, 'home.html', {'bulbs': bulbs, 'bulbsNoZone': bulbsNoZone, 'zones': zones})
+	#get_bulbs()
+	zones = Zone.objects.all()
+	bulbs = Bulb.objects.all()
+	bulbsNoZone = Bulb.objects.exclude(zone__isnull=False)
+	return render(request, 'home.html', {'bulbs': bulbs, 'bulbsNoZone': bulbs, 'zones': zones})
 
 def new_zone(request):
-    
-    return render(request, 'new_component.html')
+	if request.method == 'POST':
+		form = NewZone(request.POST)
+		if form.is_valid():
+			zone = form.save(commit=False)
+			zone.save()
+			return redirect('home')
+	else:
+		form = NewZone()
+		return render(request, 'new_zone.html', {'form': form})
 
 def edit_bulb(request, pk):
     if request.method == 'POST':
@@ -47,4 +57,6 @@ def control_zone(request, pk):
     return render(request, 'new_component.html',{'zone': zones})
 
 def stats(request):
-    return render(request, 'stats.html')
+	bulbs = Bulb.objects.all()
+	randNum = randint(1,100)
+	return render(request, 'stats.html', {'bulbs': bulbs, 'randNum': randNum})

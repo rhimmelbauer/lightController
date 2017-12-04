@@ -4,18 +4,55 @@
 {% endblock %}
 
 {% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
 {% endblock %}
 
 {% block content %}
-    <div id="gauge" class="200x160px"></div>
-    <script>
-      var g = new JustGage({
-        id: "gauge",
-        value: 67,
-        min: 0,
-        max: 100,
-        title: "Visitors"
-      });
-    </script>
+<div id="gauge" class="200x160px"></div>
+  <table class="table">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Bulb Name</th>
+            <th>Zone</th>
+            <th>Brightness</th>
+            <th>State</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for bulb in bulbs %}
+            <tr>
+              <td>
+                <a href="{% url 'edit_bulb' bulb.pk %}">{{ bulb.name }}</a>
+              </td>
+              <td>
+                {{ bulb.zone }}
+              </td>    
+              <td>
+                {{ bulb.brightness }}%
+              </td>    
+              <td>
+                {% if bulb.onOff %}
+                  On
+                {% else %}
+                  Off
+                {% endif%}
+              </td>    
+            </tr>
+          {% endfor %}
+        </tbody> 
+  </table> 
+
+
+
+
+<script>
+  var g = new JustGage({
+    id: "gauge",
+    value: {{ randNum }},
+    min: 0,
+    max: 100,
+    title: "Visitors"
+  });
+</script>
 {% endblock %}
 

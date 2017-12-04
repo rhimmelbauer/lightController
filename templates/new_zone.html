@@ -4,8 +4,17 @@
 {% endblock %}
 
 {% block breadcrumb %}
+        <li class="breadcrumb-item active">New Zone</li>
 {% endblock %}
 
 {% block content %}
+  <div class="mb-4">
+    <a href="{% url 'home' %}" class="btn btn-primary">Back Home</a>
+  </div>
+  <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form }}
+    <button type="submit" class="btn btn-success">Save</button>
+  </form>
 {% endblock %}
 

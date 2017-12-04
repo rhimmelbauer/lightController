@@ -20,12 +20,13 @@
 	  {% endfor %}
 	</ul>
 	{% endfor %}
-  <h3> <span class="badge badge-primary">Bulbs With No Zone</span> </h3>
+  <h3> <span class="badge badge-primary">Bulbs</span> </h3>
   <table class="table">
         <thead class="thead-inverse">
           <tr>
             <th>Bulb Name</th>
             <th>Zone</th>
+            <th>Brightness</th>
             <th>State</th>
           </tr>
         </thead>
@@ -36,7 +37,10 @@
                 <a href="{% url 'edit_bulb' bulb.pk %}">{{ bulb.name }}</a>
               </td>
               <td>
-                {{ bulb.description }}
+                {{ bulb.zone }}
+              </td>    
+              <td>
+                {{ bulb.brightness }}%
               </td>    
               <td>
                 {% if bulb.onOff %}
@@ -48,5 +52,5 @@
             </tr>
           {% endfor %}
         </tbody> 
-        </div> 
+  </table> 
 {% endblock %}
