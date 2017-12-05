@@ -6,84 +6,117 @@
 {% endblock %}
 
 {% block breadcrumb %}
-        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
         <li class="breadcrumb-item active">{{ bulb.name }}</li>
 {% endblock %}
 
 {% block content %}
 <div class="row">
-	<div class="col">
+	<div class="col-1">
 	</div>
-	<div class="col">
+	<!-- Images -->
+	<div class="col-5">
+		<img src="{% static 'images/bulb.png' %}" class="rounded mx-auto d-block">
 	</div>
-	<div class="col">
+	<!-- Sensors -->
+	<div class="col-5">
+		<p class="text-uppercase">Light Sensor: 88%</p>
+		<p class="text-uppercase">Temprature Sensor: 73F</p>
 	</div>
-</div>
-<img src="{% static 'images/bulb.png' %}" class="rounded mx-auto d-block">
-<div class="row" style="height: 35px;">
+	<div class="col-1">
+	</div>
 </div>
 
+
+<div class="row" style="height: 45px;"></div>
 <form method="post" novalidate>
-	<intput type="text" name="{{ bulb.name.name }}" id="{{ bulb.name.id_for_label }}">
-	</intput>
 	{% csrf_token %}
-	<!---------------- ON OFF SWITCH -------------------->
-	<div class="row text-left">
-    		On/Off:
-    </div>
-    <div class="row">
-    	<div class="col-1">
-			<div class="form-group">
-				<input id="toggle-one" type="checkbox"  class="form-control" name="{{ form.onOff.name}}" id="{{ form.onOff.id_for_label }}">
-			</div>
-    	</div>
-    </div>
-	<div class="row" style="height: 35px;">
-	</div>
-	<!---------------- ON OFF SWITCH -------------------->
-	<!---------------- COLOR PICKER -------------------->
-	<div class="row text-left">
-		Change Color:
-	</div>
 	<div class="row">
-		<div class="col-1"><input class="jscolor {onFineChange:'update(this)'} form-control" value="{{ bulb.rgbColor }}" name="{{ form.rgbColor.name }}" id="{{ form.rgbColor.id_for_label }}" style="min-width: 80px;"></input>
-		</div>
-		<div class="col"></div>
-	</div>
-	<div class="row" style="height: 35px;">
-	</div>
-	<!---------------- COLOR PICKER -------------------->
-	<!---------------- BRITHNESS SLIDER -------------------->
-	<div class="row text-left">
-		<span id="ex6CurrentSliderValLabel">Brightness: 
-			<span id="ex6SliderVal">{{ bulb.brightness }}
-			</span>
-		</span>
-	</div>
-	<div class="row">
-		<div class="col-1">
-			<input id="ex6" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="{{ bulb.brightness }}" name="{{ form.brightness.name }}" id="{{ form.brightness.id_for_label }}">
-			</input>
-		</div>
-	</div>
-	<div class="row" style="height: 35px;">
-	</div>
-	<!---------------- BRITHNESS SLIDER -------------------->
-	<!---------------- ZONE DROPDOWN -------------------->
-	<div class="row">
-		<dic class="col-6">
-			{{ form.zone }}
-		</div>
+		<!-- Controls -->
 		<div class="col-6">
-		<div>
+			<!-- On & Off Switch -->
+			<div class="row">
+				<div class="col-6 text-right">
+					Switch:
+				</div>
+				<div class="col-6">
+					<div class="form-group">
+						<input id="toggle-one" type="checkbox"  class="form-control" name="{{ form.onOff.name}}" id="{{ form.onOff.id_for_label }}">
+					</div>
+				</div>
+			</div>
+			<div class="row" style="height: 35px;"></div>
+			<!-- Color Picker -->
+			<div class="row">
+				<div class="col-6 text-right">
+					Change Color:
+				</div>
+				<div class="col-6">
+					<input class="jscolor {onFineChange:'update(this)'} form-control" value="{{ bulb.rgbColor }}" name="{{ form.rgbColor.name }}" id="{{ form.rgbColor.id_for_label }}" style="min-width: 80px;">
+					</input>
+				</div>
+			</div>
+			<div class="row" style="height: 35px;"></div>
+			<!-- Brightness -->
+			<div class="row">
+				<div class="col-6 text-right">
+					<span id="ex6CurrentSliderValLabel">Brightness: 
+						<span id="ex6SliderVal">{{ bulb.brightness }}
+						</span>
+					</span>
+				</div>
+				<div class="col-6">
+					<input id="ex6" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="{{ bulb.brightness }}" name="{{ form.brightness.name }}" id="{{ form.brightness.id_for_label }}">
+					</input>
+				</div>
+			</div>
+			<div class="row" style="height: 35px;"></div>
+			<!-- Zone -->
+			<div class="row">
+				<div class="col-6 text-right">
+					Zone:
+				</div>
+				<div class="col-6">
+					{{ form.zone }}
+				</div>
+			</div>
+		</div>
+		<!-- Map -->
+		<div class="col-6">
+			<div id="map"></div>
+		</div>
 	</div>
-	<div class="row" style="height: 35px;">
-	</div>
-	<!---------------- ZONE DROPDOWN -------------------->
+	<div class="row" style="height: 35px;"></div>
+<button type="submit">Submit</button>
+</form>	
 
-  <button type="submit">Submit</button>
-</form>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
+<script>
+	$(function () 
+	{
 
+	console.log("slider")
+    function initMap() 
+    {
+
+		console.log("slider")
+        var location = new google.maps.LatLng(50.0875726, 14.4189987);
+
+        var mapCanvas = document.getElementById('map');
+        var mapOptions = {
+            center: location,
+            zoom: 16,
+            panControl: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions);
+
+		console.log("slider")
+    }
+
+	console.log("slider")
+    google.maps.event.addDomListener(window, 'load', initMap);
+	});
+</script>
 <script>
 	$(function() {
 		$('#toggle-one').bootstrapToggle(
@@ -97,7 +130,6 @@
 </script>
 <script>
 	// With JQuery
-	console.log("slider")
 	$("#ex6").slider();
 $("#ex6").on("slide", function(slideEvt) {
 	$("#ex6SliderVal").text(slideEvt.value);

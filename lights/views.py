@@ -25,26 +25,26 @@ def new_zone(request):
 
 def edit_bulb(request, pk):
     if request.method == 'POST':
-    	print("-------------------POST ENTERED---------------------")
-    	form = CustomBulb(request.POST)
-    	print(form['brightness'])
-    	print(form['rgbColor'])
-    	print(form['onOff'])
-    	print(form['zone'].value)
-    	if form.is_valid():
-    		print("------------------------VALID-----------------")
-    		bulb = Bulb.objects.get(pk=pk)
-    		bulbForm = form.save(commit=False)
-    		bulb.onOff = bulbForm.onOff
-    		bulb.rgbColor = bulbForm.rgbColor
-    		bulb.brightness = bulbForm.brightness
-    		bulb.zone = bulbForm.zone
-    		bulb.save()
-                update_bulb(bulb)
-    		return redirect('home')
-    	else:
-    		print (form['onOff'])
-    		return redirect('home')
+        print("-------------------POST ENTERED---------------------")
+        form = CustomBulb(request.POST)
+        print(form['brightness'])
+        print(form['rgbColor'])
+        print(form['onOff'])
+        print(form['zone'].value)
+        if form.is_valid():
+            print("------------------------VALID-----------------")
+            bulb = Bulb.objects.get(pk=pk)
+            bulbForm = form.save(commit=False)
+            bulb.onOff = bulbForm.onOff
+            bulb.rgbColor = bulbForm.rgbColor
+            bulb.brightness = bulbForm.brightness
+            bulb.zone = bulbForm.zone
+            bulb.save()
+            #update_bulb(bulb)
+            return redirect('home')
+        else:
+            print (form['onOff'])
+            return redirect('home')
 
     else:
         form = CustomBulb()
@@ -53,9 +53,10 @@ def edit_bulb(request, pk):
         zones = Zone.objects.all()
         return render(request, 'edit_bulb.html', {'bulb': bulb, 'form': form, 'zones': zones })
 
-def control_zone(request, pk):
-    zone = get_object_or_404(Zone, pk=pk)
-    return render(request, 'new_component.html',{'zone': zones})
+def control_zone(request):
+    zones = Zone.objects.all()
+    bulbs = Bulb.objects.all()
+    return render(request, 'control_zone.html',{'zones': zones, 'bulbs': bulbs})
 
 def stats(request):
 	bulbs = Bulb.objects.all()

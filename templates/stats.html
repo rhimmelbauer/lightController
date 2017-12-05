@@ -4,43 +4,47 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Device Consumption</a></li>
 {% endblock %}
 
 {% block content %}
 <div id="gauge" class="200x160px"></div>
-  <table class="table">
-        <thead class="thead-inverse">
+<table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Bulb Name</th>
+          <th>Zone</th>
+          <th>Brightness</th>
+          <th>State</th>
+          <th>Protocol</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bulb in bulbs %}
           <tr>
-            <th>Bulb Name</th>
-            <th>Zone</th>
-            <th>Brightness</th>
-            <th>State</th>
+            <td>
+              <a href="{% url 'edit_bulb' bulb.pk %}">{{ bulb.name }}</a>
+            </td>
+            <td>
+              {{ bulb.zone }}
+            </td>    
+            <td>
+              {{ bulb.brightness }}%
+            </td>    
+            <td>
+              {% if bulb.onOff %}
+                On
+              {% else %}
+                Off
+              {% endif%}
+            </td>    
+            <td>
+              WiFi
+            </td> 
           </tr>
-        </thead>
-        <tbody>
-          {% for bulb in bulbs %}
-            <tr>
-              <td>
-                <a href="{% url 'edit_bulb' bulb.pk %}">{{ bulb.name }}</a>
-              </td>
-              <td>
-                {{ bulb.zone }}
-              </td>    
-              <td>
-                {{ bulb.brightness }}%
-              </td>    
-              <td>
-                {% if bulb.onOff %}
-                  On
-                {% else %}
-                  Off
-                {% endif%}
-              </td>    
-            </tr>
-          {% endfor %}
-        </tbody> 
-  </table> 
+        {% endfor %}
+      </tbody> 
+</table> 
 
 
 
@@ -51,7 +55,7 @@
     value: {{ randNum }},
     min: 0,
     max: 100,
-    title: "Visitors"
+    title: "Current Power Consumption"
   });
 </script>
 {% endblock %}

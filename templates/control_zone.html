@@ -4,8 +4,76 @@
 {% endblock %}
 
 {% block breadcrumb %}
+        <li class="breadcrumb-item active">Zone Control</li>
 {% endblock %}
 
 {% block content %}
+<form method="post" novalidate>
+	{% csrf_token %}
+{% for zone in zones %}
+<div class="row">
+	<div class="col-6 text-left">
+		<h2 class="text-uppercase font-weight-bold">{{zone.name}}</h2>
+	</div>
+	<div class="col-6">
+		<div class="col-6 text-right">
+			<div class="form-group">
+				Zone Switch:
+				<input type="checkbox"  class="form-control toggle-one" name="{{ form.zone.name}}" id="{{ form.zone.id_for_label }}">
+			</div>
+		</div>
+	</div>
+	<table class="table table-striped">
+	      <thead class="thead-default">
+	        <tr>
+	          <th>Bulb Name</th>
+	          <th>Zone</th>
+	          <th>Brightness</th>
+	          <th>State</th>
+	          <th>Protocol</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        {% for bulb in bulbs %}
+	        {% if bulb.zone == zone %}
+	          <tr>
+	            <td>
+	              <a href="{% url 'edit_bulb' bulb.pk %}">{{ bulb.name }}</a>
+	            </td>
+	            <td>
+	              {{ bulb.zone }}
+	            </td>    
+	            <td>
+	              {{ bulb.brightness }}%
+	            </td>    
+	            <td>
+	              {% if bulb.onOff %}
+	                On
+	              {% else %}
+	                Off
+	              {% endif%}
+	            </td>    
+	            <td>
+	              WiFi
+	            </td> 
+	          </tr>
+	          {% endif%}
+	        {% endfor %}
+	      </tbody> 
+	</table> 
+	<div class="row" style="height: 35px;"></div>
+</div>
+{% endfor %}
+
+    <button type="submit" class="btn btn-success">Update Status</button>
+</form>
+
+<script>
+	$(function() {
+	    $('.toggle-one').bootstrapToggle(
+		);
+	  })
+</script>
 {% endblock %}
+	
 
