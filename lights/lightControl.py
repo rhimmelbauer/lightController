@@ -19,8 +19,11 @@ def update_bulb(bulb):
 		smartBulb.turn_on()
 	else:
 		smartBulb.turn_off()
+	if smartBulb.is_color:
+		hsv = rgb2hsv(int(bulb.rgbColor[0:2], 16),int(bulb.rgbColor[2:4], 16),int(bulb.rgbColor[4:6], 16))
+		smartBulb.hsv = hsv
 
-	hsv = rgb2hsv(int(bulb.rgbColor[0:2], 16),int(bulb.rgbColor[2:4], 16),int(bulb.rgbColor[4:6], 16))
+	smartBulb.brightness = bulb.brightness
 
 def get_consumption():
 	consumption = 0
@@ -43,12 +46,19 @@ def create_new_bulb(strBulb):
 	ipAddr = strBulb[2]
 	if strBulb[5] == "True":
 		onOff = True
+	else:
+		onOff = False
 	rgbColor = "FFFFFF"
 	brightness = int(strBulb[10].strip(','))
+	if len(strBulb) > 14:
+		is_color = True
+	else:
+		is_color = False
 	
 	newBulb.name = name
 	newBulb.ipAddr = ipAddr
 	newBulb.onOff = onOff
 	newBulb.rgbColor = rgbColor
 	newBulb.brightness = brightness
+	newBulb.is_color = is_color
 	newBulb.save()

@@ -51,7 +51,7 @@
 					Change Color:
 				</div>
 				<div class="col-6">
-					<input class="jscolor {onFineChange:'update(this)'} form-control" value="{{ bulb.rgbColor }}" name="{{ form.rgbColor.name }}" id="{{ form.rgbColor.id_for_label }}" style="min-width: 80px;">
+					<input class="jscolor {onFineChange:'update(this)'} form-control" value="{{ bulb.rgbColor }}" name="{{ form.rgbColor.name }}" id="{{ form.rgbColor.id_for_label }}" style="min-width: 80px;" {% if bulb.is_color == False %} disabled {% endif %}>
 					</input>
 				</div>
 			</div>

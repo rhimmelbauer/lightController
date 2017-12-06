@@ -40,7 +40,7 @@ def edit_bulb(request, pk):
             bulb.brightness = bulbForm.brightness
             bulb.zone = bulbForm.zone
             bulb.save()
-            #update_bulb(bulb)
+            update_bulb(bulb)
             return redirect('home')
         else:
             print (form['onOff'])

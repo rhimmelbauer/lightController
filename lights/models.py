@@ -9,7 +9,7 @@ class Zone(models.Model):
     
 class Bulb(models.Model):
     name = models.CharField(max_length = 100)
-    bulb_type = models.CharField(max_length = 100, blank=True, null=True, default='')
+    is_color = models.BooleanField(default=False)
     zone = models.ForeignKey(Zone, related_name = 'b_zone_id', blank=True, null=True)
     onOff = models.BooleanField(default = False)
     rgbColor = models.CharField(max_length=8, default = 'ffcc00', blank=True, null=True)
