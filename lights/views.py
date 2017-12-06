@@ -59,6 +59,7 @@ def control_zone(request):
     return render(request, 'control_zone.html',{'zones': zones, 'bulbs': bulbs})
 
 def stats(request):
+	get_bulbs()
+	randNum = get_consumption()
 	bulbs = Bulb.objects.all()
-	randNum = randint(1,100)
 	return render(request, 'stats.html', {'bulbs': bulbs, 'randNum': randNum})
