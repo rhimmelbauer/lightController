@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from random import randint
-
+from django.db.models import Sum
 from .models import *
 from .forms import *
 from .lightControl import *
@@ -80,3 +80,12 @@ def stats(request):
 		else:
 			randNum = 0
 		return render(request, 'stats.html', {'bulbs': bulbs, 'randNum': randNum})
+
+def dashboard(request):
+	pythonData = []
+	pythonData.append(['Bulb','Watts'])
+	for bulb in Bulb.objects.all():
+		totalMilliwatts = LogBulb.objects.filter(bulb=bulb).aggregate(Sum('consumption'))
+		pythonData.append([bulb.name, (totalMilliwatts['consumption__sum']/1000)])
+	print(pythonData)
+	return render(request, 'dashboard.html', {'pythonData': pythonData })
