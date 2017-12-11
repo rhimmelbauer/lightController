@@ -45,7 +45,10 @@
         {% endfor %}
       </tbody> 
 </table> 
-
+<form method="POST">
+	{% csrf_token %}
+	<button type="submit" name="start_fresh">Get Bulbs</button>
+</form>
 
 
 

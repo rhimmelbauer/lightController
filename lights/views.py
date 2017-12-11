@@ -6,6 +6,7 @@ from .forms import *
 from .lightControl import *
 
 def home(request):
+	log_consumption()
 	get_bulbs()
 	zones = Zone.objects.all()
 	bulbs = Bulb.objects.all()
@@ -13,6 +14,7 @@ def home(request):
 	return render(request, 'home.html', {'bulbs': bulbs, 'bulbsNoZone': bulbs, 'zones': zones})
 
 def new_zone(request):
+	log_consumption()
 	if request.method == 'POST':
 		form = NewZone(request.POST)
 		if form.is_valid():
@@ -24,42 +26,57 @@ def new_zone(request):
 		return render(request, 'new_zone.html', {'form': form})
 
 def edit_bulb(request, pk):
-    if request.method == 'POST':
-        print("-------------------POST ENTERED---------------------")
-        form = CustomBulb(request.POST)
-        print(form['brightness'])
-        print(form['rgbColor'])
-        print(form['onOff'])
-        print(form['zone'].value)
-        if form.is_valid():
-            print("------------------------VALID-----------------")
-            bulb = Bulb.objects.get(pk=pk)
-            bulbForm = form.save(commit=False)
-            bulb.onOff = bulbForm.onOff
-            bulb.rgbColor = bulbForm.rgbColor
-            bulb.brightness = bulbForm.brightness
-            bulb.zone = bulbForm.zone
-            bulb.save()
-            update_bulb(bulb)
-            return redirect('home')
-        else:
-            print (form['onOff'])
-            return redirect('home')
+	log_consumption()
+	if request.method == 'POST':
+		form = CustomBulb(request.POST)
+		if form.is_valid():
+			bulb = Bulb.objects.get(pk=pk)
+			bulbForm = form.save(commit=False)
+			bulb.onOff = bulbForm.onOff
+			bulb.rgbColor = bulbForm.rgbColor
+			bulb.brightness = bulbForm.brightness
+			bulb.zone = bulbForm.zone
+			bulb.save()
+			update_bulb(bulb)
+			return redirect('home')
+		else:
+			return redirect('home')
 
-    else:
-        form = CustomBulb()
-        bulb = get_object_or_404(Bulb, pk=pk)
-        print(bulb.zone)
-        zones = Zone.objects.all()
-        return render(request, 'edit_bulb.html', {'bulb': bulb, 'form': form, 'zones': zones })
+	else:
+		form = CustomBulb()
+		bulb = get_object_or_404(Bulb, pk=pk)
+		zones = Zone.objects.all()
+		return render(request, 'edit_bulb.html', {'bulb': bulb, 'form': form, 'zones': zones })
 
 def control_zone(request):
-    zones = Zone.objects.all()
-    bulbs = Bulb.objects.all()
-    return render(request, 'control_zone.html',{'zones': zones, 'bulbs': bulbs})
+	log_consumption()
+	if request.method == "POST":
+		print("Post entered")
+		for zone in Zone.objects.all():
+			try:
+				if request.POST["onOff_" + str(zone.pk)] == 'on':
+					for bulb in Bulb.objects.filter(zone=zone):
+						bulb_turn_on(bulb)
+			except:
+				for bulb in Bulb.objects.filter(zone=zone):
+					bulb_turn_off(bulb)
+				print("Zone: %s is off" % zone)
+		return redirect('control_zone')
+	else:
+		zones = Zone.objects.all()
+		bulbs = Bulb.objects.all()
+		form = ControlZoneForm()
+		return render(request, 'control_zone.html',{'zones': zones, 'bulbs': bulbs, 'form': form})
 
 def stats(request):
-	get_bulbs()
-	randNum = get_consumption()
-	bulbs = Bulb.objects.all()
-	return render(request, 'stats.html', {'bulbs': bulbs, 'randNum': randNum})
+	log_consumption()
+	if request.method == "POST":
+		get_bulbs()
+		return redirect('home')	
+	else:
+		bulbs = Bulb.objects.all()
+		if len(bulbs) > 0:
+			randNum = get_consumption()
+		else:
+			randNum = 0
+		return render(request, 'stats.html', {'bulbs': bulbs, 'randNum': randNum})

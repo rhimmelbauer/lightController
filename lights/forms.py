@@ -25,3 +25,8 @@ class NewZone(forms.ModelForm):
         model = Zone
         fields = ['name',
         'description']
+
+class ControlZoneForm(forms.Form):
+	def clean(self):
+		cleaned_data = super(ControlZoneForm, self).clean()
+		onOff = cleaned_data.get('onOff')

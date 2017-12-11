@@ -18,3 +18,8 @@ class Bulb(models.Model):
     ipAddr = models.CharField(max_length=16, blank=True, null=True)
     def __str__(self):
         return self.name
+
+class LogBulb(models.Model):
+	bulb = models.ForeignKey(Bulb, related_name = 'l_bulb_id')
+	consumption = models.IntegerField()
+	log_time = models.DateTimeField(auto_now_add=True)
