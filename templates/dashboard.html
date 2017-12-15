@@ -43,7 +43,7 @@
       view.setColumns([0, 1]);
 
       var options = {
-        title: "Density of Precious Metals, in g/cm^3",
+        title: "",
         width: 600,
         height: 400,
         bar: {groupWidth: "95%"},
@@ -53,11 +53,11 @@
       chart1.draw(view, options);
       }
 </script>
-<div class="row">
+<div class="row" hidden>
 	<h1>Date vs Milliwatts</h1>
 	<div id="curve_chart" style="width: 900px; height: 500px"></div>
 </div>
-<div class="row">{{ pythonData }}
+<div class="row">
         <h1>Milliwatts</h1>
         <div id="total_watts" style="width: 900px; height: 500px"></div>
 </div>
