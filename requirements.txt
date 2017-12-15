@@ -1,0 +1,16 @@
+appdirs==1.4.3
+click==6.7
+click-datetime==0.2
+Cython==0.27.3
+Django==1.11.7
+django-widget-tweaks==1.4.1
+h5py==2.7.1
+numpy==1.13.3
+packaging==16.8
+pyHS100==0.3.0
+pyparsing==2.2.0
+pytz==2017.3
+six==1.11.0
+team==1.0
+typing==3.6.2
+
