@@ -6,7 +6,12 @@ from .forms import *
 from .lightControl import *
 
 def home(request):
-	return render(request, 'home.html')
+	if request.method == 'POST':
+		Bulb.objects.all().delete()
+		LogBulb.objects.all().delete()
+		return redirect('stats')	
+	else:
+		return render(request, 'home.html')
 
 def new_zone(request):
 	log_consumption()

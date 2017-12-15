@@ -14,8 +14,11 @@
 </div>
 <div class="row">
 	<div class="col text-center">
-		<button href="{% url 'stats' %}"><h3>PUSH TO START</h3></button>
+	<form method="post" novalidate>
+		{% csrf_token %}
+		<button type="submit" href="{% url 'stats' %}"><h3>PUSH TO START</h3></button>
 	</div>
+	</form>
 </div>
 {% endblock %}
 
