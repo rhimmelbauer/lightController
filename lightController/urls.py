@@ -20,6 +20,7 @@ from lights import views
 
 urlpatterns = [
     url(r'^$', views.stats, name='home'),
+    url(r'^stats', views.stats, name='stats'),
     url(r'^new_zone', views.new_zone, name='new_zone'),
     url(r'^dashboard', views.dashboard, name='dashboard'),
     url(r'^edit_bulb/(?P<pk>\d+)/$', views.edit_bulb, name='edit_bulb'),

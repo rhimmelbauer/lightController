@@ -6,12 +6,7 @@ from .forms import *
 from .lightControl import *
 
 def home(request):
-	log_consumption()
-	get_bulbs()
-	zones = Zone.objects.all()
-	bulbs = Bulb.objects.all()
-	bulbsNoZone = Bulb.objects.exclude(zone__isnull=False)
-	return render(request, 'home.html', {'bulbs': bulbs, 'bulbsNoZone': bulbs, 'zones': zones})
+	return render(request, 'home.html')
 
 def new_zone(request):
 	log_consumption()
@@ -20,7 +15,7 @@ def new_zone(request):
 		if form.is_valid():
 			zone = form.save(commit=False)
 			zone.save()
-			return redirect('home')
+			return redirect('stats')
 	else:
 		form = NewZone()
 		return render(request, 'new_zone.html', {'form': form})
@@ -38,9 +33,9 @@ def edit_bulb(request, pk):
 			bulb.zone = bulbForm.zone
 			bulb.save()
 			update_bulb(bulb)
-			return redirect('home')
+			return redirect('stats')
 		else:
-			return redirect('home')
+			return redirect('stats')
 
 	else:
 		form = CustomBulb()
@@ -72,7 +67,7 @@ def stats(request):
 	log_consumption()
 	if request.method == "POST":
 		get_bulbs()
-		return redirect('home')	
+		return redirect('stats')	
 	else:
 		bulbs = Bulb.objects.all()
 		if len(bulbs) > 0:
